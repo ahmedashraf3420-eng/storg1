@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موقع أحمد الجامد</title>
+<style>
+body { background:white; text-align:center; font-family:sans-serif; padding-top:60px; transition:0.3s; }
+h1 { color: blue; }
+p { color: #b5a600; }
+#counter { color:black; margin:15px; font-size:22px; font-weight:bold; }
+.box { background:white; width:200px; padding:20px; border:2px solid blue; margin:auto; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.3); font-weight:bold; color:black; }
+.buttons { margin-top:20px; }
+button { padding:10px 20px; border:none; border-radius:10px; background:blue; color:white; font-size:16px; cursor:pointer; margin:5px; }
+button:nth-child(2){background:green} button:nth-child(3){background:#b5a600} .reset{background:black !important}
+.dark-btn{ background:black; color:white; position:absolute; top:10px; left:50%; transform:translateX(-50%); }
+.counts{ display:flex; justify-content:center; gap:10px; margin-top:20px; }
+.c{ padding:8px 15px; border-radius:10px; font-weight:bold; color:black; }
+.white-c{ background:#eee; border:1px solid #ccc; } .green-c{ background:lightgreen; } .yellow-c{ background:yellow; }
+body.dark{ background:#111 !important; } body.dark h1{ color:white; } body.dark p{ color:#ffeb3b; } body.dark #counter{ color:white !important; } body.dark .white-c{ background:#333; color:white; }
+</style>
+</head>
+<body>
+<button onclick="toggleDark()" class="dark-btn">🌙 دارك مود</button>
+<h1>مرحبا يا أحمد</h1>
+<p>عداد كل لون لوحده</p>
+<div class="box" id="myBox">ده صندوق</div>
+<div class="counts">
+<div class="c white-c">أبيض: <span id="wCount">0</span></div>
+<div class="c green-c">أخضر: <span id="gCount">0</span></div>
+<div class="c yellow-c">أصفر: <span id="yCount">0</span></div>
+</div>
+<h2 id="counter">الكل: 0</h2>
+<div class="buttons">
+<button onclick="makeWhite()">أبيض</button>
+<button onclick="makeGreen()">أخضر</button>
+<button onclick="makeYellow()">أصفر</button>
+<button onclick="resetAll()" class="reset">اعادة</button>
+</div>
+<script>
+let saved = localStorage.getItem('counts');
+let counts = saved ? JSON.parse(saved) : { white:0, green:0, yellow:0 };
+let box = document.getElementById('myBox');
+function save(){ localStorage.setItem('counts', JSON.stringify(counts)); }
+function update(){
+ document.getElementById('wCount').innerText=counts.white;
+ document.getElementById('gCount').innerText=counts.green;
+ document.getElementById('yCount').innerText=counts.yellow;
+ document.getElementById('counter').innerText=`الكل: ${counts.white+counts.green+counts.yellow}`;
+ save();
+}
+function makeWhite(){ counts.white++; box.style.backgroundColor='white'; box.innerHTML='أبيض'; update(); }
+function makeGreen(){ counts.green++; box.style.backgroundColor='lightgreen'; box.innerHTML='أخضر 🔥'; update(); }
+function makeYellow(){ counts.yellow++; box.style.backgroundColor='yellow'; box.innerHTML='أصفر ⭐'; update(); }
+function resetAll(){ counts={white:0,green:0,yellow:0}; box.style.backgroundColor='white'; box.innerHTML='ده صندوق'; update(); localStorage.removeItem('counts'); }
+function toggleDark(){ document.body.classList.toggle('dark'); document.querySelector('.dark-btn').innerText=document.body.classList.contains('dark')?'☀️ لايت مود':'🌙 دارك مود'; }
+update();
+</script>
+</body>
+</html>
